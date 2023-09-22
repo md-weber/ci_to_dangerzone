@@ -3,19 +3,25 @@
 import 'dart:math' as math;
 
 import 'package:flame/events.dart';
-import 'package:flame/experimental.dart';
 import 'package:flame/game.dart';
+import 'package:flame/components.dart';
 
 import 'player.dart';
 import 'race_track.dart';
 import 'stacked_sprite_component.dart';
 
-
-const vehicles = ['BlueCar', 'YellowCar', 'GreenBigCar', 'RedMotorcycle', 'WhiteMotorcycle'];
+const vehicles = [
+  'BlueCar',
+  'YellowCar',
+  'GreenBigCar',
+  'RedMotorcycle',
+  'WhiteMotorcycle'
+];
 
 enum Overlays { start, end, game }
 
-class CIDangerZone extends FlameGame with HasKeyboardHandlerComponents, HasDraggableComponents, HasCollisionDetection {
+class CIDangerZone extends FlameGame
+    with HasKeyboardHandlerComponents, HasCollisionDetection, DragCallbacks {
   String _vehicleName = vehicles[0];
 
   StackedSpriteComponent? playerOne;
@@ -36,7 +42,7 @@ class CIDangerZone extends FlameGame with HasKeyboardHandlerComponents, HasDragg
 
   String resultText = "";
   double courseTime = 0;
- 
+
   CIDangerZone({super.children}) {
     initializeGameStart();
   }
@@ -68,7 +74,7 @@ class CIDangerZone extends FlameGame with HasKeyboardHandlerComponents, HasDragg
     _lapDisplay = LapDisplay();
     add(_lapDisplay);
     _startGrid = StartGrid(position: Vector2(180, 350));
-    add(_startGrid);  
+    add(_startGrid);
   }
 
   void lap() {
@@ -90,13 +96,13 @@ class CIDangerZone extends FlameGame with HasKeyboardHandlerComponents, HasDragg
 
     courseTime = currentTime() - _gameTimer;
     _gameTimer = 0;
-    
+
     overlays.remove(Overlays.game.name);
     if (win) {
       resultText = "🏆 FINISHED 🏆";
     } else {
       resultText = "⚠️ CRASHED ⚠️";
-    }    
+    }
     overlays.add(Overlays.end.name);
   }
 
@@ -118,7 +124,9 @@ class CIDangerZone extends FlameGame with HasKeyboardHandlerComponents, HasDragg
       return;
     }
 
-    player.angle = math.atan2(evtY - player.position.y, evtX - player.position.x) * degrees2Radians;
+    player.angle =
+        math.atan2(evtY - player.position.y, evtX - player.position.x) *
+            degrees2Radians;
 
     final delta = Vector2(evtX - player.x, evtY - player.y);
     player.move(delta);

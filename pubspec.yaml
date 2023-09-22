@@ -11,11 +11,11 @@ environment:
 dependencies:
   crypton: ^2.1.0
   cupertino_icons: ^1.0.2
-  flame: ^1.6.0
+  flame: ^1.9.0
   flutter:
     sdk: flutter
-  http: ^0.13.5
-  lua_dardo: #^0.0.4
+  http: ^1.1.0
+  lua_dardo: #^0.0.5
     git:
       url: https://github.com/maks/LuaDardo
       ref: js_int_size_fix
