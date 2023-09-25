@@ -5,7 +5,7 @@ import 'dart:math' as math;
 import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flame/components.dart';
-
+import 'package:flame_forge2d/forge2d_game.dart';
 import 'player.dart';
 import 'race_track.dart';
 import 'stacked_sprite_component.dart';
@@ -20,7 +20,7 @@ const vehicles = [
 
 enum Overlays { start, end, game }
 
-class CIDangerZone extends FlameGame
+class CIDangerZone extends Forge2DGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, DragCallbacks {
   String _vehicleName = vehicles[0];
 
@@ -43,7 +43,7 @@ class CIDangerZone extends FlameGame
   String resultText = "";
   double courseTime = 0;
 
-  CIDangerZone({super.children}) {
+  CIDangerZone() {
     initializeGameStart();
   }
 

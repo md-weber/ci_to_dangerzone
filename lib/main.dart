@@ -33,9 +33,7 @@ class MyHomePage extends StatefulWidget {
   State<MyHomePage> createState() => _MyHomePageState();
 }
 
-
 class _MyHomePageState extends State<MyHomePage> {
-
   late final CIDangerZone _game;
 
   @override
@@ -50,10 +48,11 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: GameWidget(
           game: _game,
-          overlayBuilderMap: <String, Widget Function(BuildContext, CIDangerZone)>{
+          overlayBuilderMap: <String,
+              Widget Function(BuildContext, CIDangerZone)>{
             Overlays.start.name: (context, game) => GameStartOverlay(game),
             Overlays.end.name: (context, game) => GameOverOverlay(game),
-            Overlays.game.name: (context, game) => GameOverlay(game),            
+            Overlays.game.name: (context, game) => GameOverlay(game),
           },
           initialActiveOverlays: [Overlays.start.name],
         ),
