@@ -24,6 +24,7 @@ abstract class StackedSpriteComponent extends PositionComponent {
   @override
   Future<void>? onLoad() async {
     super.onLoad();
+    priority = -1;
     await _getBatch();
   }
 
@@ -31,10 +32,6 @@ abstract class StackedSpriteComponent extends PositionComponent {
   void render(Canvas canvas) {
     super.render(canvas);
     _batch.render(canvas);
-  }
-
-  void move(Vector2 delta) {
-    position.add(delta / 4); // makes movements smaller, smoother, less jerky
   }
 
   Future<void> _getBatch() async {

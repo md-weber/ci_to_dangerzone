@@ -2,13 +2,14 @@
 
 import 'dart:math' as math;
 
+import 'package:ci_dangerzone_app/components/race_track.dart';
+import 'package:ci_dangerzone_app/components/start_grid.dart';
 import 'package:flame/events.dart';
-import 'package:flame/game.dart';
 import 'package:flame/components.dart';
+import 'package:flame/extensions.dart';
 import 'package:flame_forge2d/forge2d_game.dart';
-import 'player.dart';
+import 'components/player.dart';
 import 'race_track.dart';
-import 'stacked_sprite_component.dart';
 
 const vehicles = [
   'BlueCar',
@@ -22,12 +23,16 @@ enum Overlays { start, end, game }
 
 class CIDangerZone extends Forge2DGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, DragCallbacks {
+  CIDangerZone() : super(zoom: 1.0, gravity: Vector2.all(0)) {
+    initializeGameStart();
+  }
+
   String _vehicleName = vehicles[0];
 
-  StackedSpriteComponent? playerOne;
+  PlayerBody? playerOne;
   RaceTrack _raceTrack = RaceTrack();
   LapDisplay _lapDisplay = LapDisplay();
-  StartGrid _startGrid = StartGrid(position: Vector2(180, 350));
+  StartGridBody? _startGrid;
 
   int _lapCount = -1;
 
@@ -43,10 +48,6 @@ class CIDangerZone extends Forge2DGame
   String resultText = "";
   double courseTime = 0;
 
-  CIDangerZone() {
-    initializeGameStart();
-  }
-
   void startGame() {
     initializeGameStart();
     overlays.remove(Overlays.start.name);
@@ -55,26 +56,32 @@ class CIDangerZone extends Forge2DGame
 
   void initializeGameStart() {
     if (playerOne != null && playerOne!.isMounted) {
-      remove(playerOne!);
+      world.remove(playerOne!);
     }
     if (_raceTrack.isMounted) {
-      remove(_raceTrack);
+      world.remove(_raceTrack);
     }
     if (_lapDisplay.isMounted) {
-      remove(_lapDisplay);
+      world.remove(_lapDisplay);
     }
     _lapCount = -1;
 
-    playerOne = Player(this, _vehicleName)
-      ..scale = Vector2.all(4)
-      ..position = Vector2(120, 400); //starting position of player
-    add(playerOne!);
+    playerOne = PlayerBody(
+      flameGame: this,
+      name: _vehicleName,
+    ); //starting position of player
     _raceTrack = RaceTrack();
-    add(_raceTrack);
     _lapDisplay = LapDisplay();
-    add(_lapDisplay);
-    _startGrid = StartGrid(position: Vector2(180, 350));
-    add(_startGrid);
+    _startGrid = StartGridBody(
+      initPosition: Vector2(-250, 140),
+    );
+
+    world.addAll([
+      _raceTrack,
+      _lapDisplay,
+      _startGrid!,
+      playerOne!,
+    ]);
   }
 
   void lap() {
@@ -89,10 +96,10 @@ class CIDangerZone extends Forge2DGame
   }
 
   void endGame({bool win = false}) {
-    playerOne?.removeFromParent();
-    _raceTrack.removeFromParent();
-    _startGrid.removeFromParent();
-    _lapDisplay.removeFromParent();
+    world.remove(playerOne!);
+    world.remove(_raceTrack);
+    world.remove(_startGrid!);
+    world.remove(_lapDisplay);
 
     courseTime = currentTime() - _gameTimer;
     _gameTimer = 0;
@@ -115,8 +122,8 @@ class CIDangerZone extends Forge2DGame
   void onDragUpdate(DragUpdateEvent event) {
     super.onDragUpdate(event);
 
-    final evtX = event.canvasPosition.x;
-    final evtY = event.canvasPosition.y;
+    final evtX = event.canvasPosition.x - (size.x / 2);
+    final evtY = event.canvasPosition.y - (size.y / 2);
 
     final player = playerOne;
 
@@ -124,11 +131,11 @@ class CIDangerZone extends Forge2DGame
       return;
     }
 
-    player.angle =
+    (player.children.first as PositionComponent).angle =
         math.atan2(evtY - player.position.y, evtX - player.position.x) *
             degrees2Radians;
 
-    final delta = Vector2(evtX - player.x, evtY - player.y);
+    final delta = Vector2(evtX - player.position.x, evtY - player.position.y);
     player.move(delta);
   }
 }

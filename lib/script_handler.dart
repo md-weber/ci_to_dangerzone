@@ -2,7 +2,7 @@
 
 import 'dart:math';
 
-import 'package:ci_dangerzone_app/race_track.dart';
+import 'package:ci_dangerzone_app/components/race_track.dart';
 import 'package:lua_dardo/lua.dart';
 
 class ScriptHandler {
@@ -23,7 +23,7 @@ class ScriptHandler {
     // now we have them, pop args off the Lua stack
     ls.pop(3);
 
-    print("FROM LUA: $x, $y, $visible");
+    // print("FROM LUA: $x, $y, $visible");
 
     if (x == null || y == null) {
       throw ArgumentError("x and y cannot be null");
@@ -41,16 +41,16 @@ class ScriptHandler {
   }
 
   int _printFromLua(LuaState ls) {
-    final mesg = ls.checkString(1);
+    // final mesg = ls.checkString(1);
     // now we have them, pop args off the Lua stack
     ls.pop(1);
-    print("[LUA] $mesg");
+    // print("[LUA] $mesg");
     return 1;
   }
 
   void createObstacles() {
     state.loadString(script);
-    print("Lua:\n $script");
+    // print("Lua:\n $script");
     // eval the Lua chunk before we can call functions in it
     state.call(0, 0);
 
