@@ -12,7 +12,8 @@ Future<String> loadScriptFromAsset() async {
 }
 
 Future<String> loadScriptFromNetwork() async {
-  const scriptUrl = kDebugMode ? "http://localhost:8080" : "https://ci-to-dangerzone.web.app";
+  const scriptUrl =
+      kDebugMode ? "http://localhost:3000" : "https://ci-to-dangerzone.web.app";
 
   late final String script;
 
