@@ -1,71 +1,4 @@
 workflows:
-  default-workflow:
-    name: Default Workflow
-    max_build_duration: 60
-    environment:
-      flutter: default
-      xcode: latest
-      cocoapods: default
-      groups:
-        - firebase
-        - script-signing
-        - artifacts
-    triggering:
-      events:
-        - push
-      branch_patterns: 
-        - pattern: main
-      cancel_previous_builds: true
-    when:
-      changeset:
-        includes:
-          - '.'
-        excludes:
-          - 'game_scripts/*'  
-    scripts:
-      - |
-        # set up debug keystore
-        rm -f ~/.android/debug.keystore
-        keytool -genkeypair \
-          -alias androiddebugkey \
-          -keypass android \
-          -keystore ~/.android/debug.keystore \
-          -storepass android \
-          -dname 'CN=Android Debug,O=Android,C=US' \
-          -keyalg 'RSA' \
-          -keysize 2048 \
-          -validity 10000
-      - |
-        # set up local properties
-        echo "flutter.sdk=$HOME/programs/flutter" > "$FCI_BUILD_DIR/android/local.properties"
-      - flutter packages pub get
-      - flutter config --enable-web
-      - flutter build appbundle --release
-      - find . -name "Podfile" -execdir pod install \;
-      - flutter build ios --debug --no-codesign
-      - |
-        # build web
-        flutter build web --release
-        cd build/web
-        7z a -r ../web.zip ./*
-    artifacts:
-      - build/**/outputs/apk/**/*.apk
-      - build/**/outputs/bundle/**/*.aab
-      - build/**/outputs/**/mapping.txt
-      - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
-      - build/web.zip
-      - '*.snap'
-      - build/windows/**/*.msix
-      - flutter_drive.log
-    publishing:
-      email:
-        recipients:
-          - maks@manichord.com
-      scripts:
-      - |
-        # get public urls with longer expiry time
-        tools/get_public_url.dart      
   sign-upload-only-workflow:
     name: Sign and upload script Only Workflow
     max_build_duration: 10
@@ -77,23 +10,23 @@ workflows:
     triggering:
       events:
         - push
-      branch_patterns: 
+      branch_patterns:
         - pattern: main
       cancel_previous_builds: true
     when:
       changeset:
         includes:
-          - 'game_scripts/*'    
+          - "game_scripts/*"
     scripts:
       - name: get packages needed by signing script
         script: |
-          flutter pub get 
+          flutter pub get
       - name: sign lua script file
         script: |
           tools/sign_script.dart game_scripts/obstacles.lua
           mkdir -p build/web
           cp game_scripts/obstacles.lua build/web/
-          cp signature build/web/   
+          cp signature build/web/
       - name: Publish to Firebase Hosting
         script: |
           firebase deploy --token "$FIREBASE_TOKEN"
