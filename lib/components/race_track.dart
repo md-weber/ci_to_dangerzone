@@ -1,9 +1,10 @@
 import 'package:ci_dangerzone_app/components/obstacles.dart';
+import 'package:ci_dangerzone_app/game.dart';
 import 'package:ci_dangerzone_app/script_handler.dart';
 import 'package:ci_dangerzone_app/script_loader.dart';
 import 'package:flame/components.dart';
 
-class RaceTrack extends SpriteComponent {
+class RaceTrack extends SpriteComponent with HasGameReference<CIDangerZone> {
   late final ScriptHandler scriptHandler;
 
   RaceTrack()
@@ -26,7 +27,11 @@ class RaceTrack extends SpriteComponent {
 
   Future<void> addObstacle(double x, double y, bool visible) async {
     if (visible) {
-      await add(WitchesHatBody(initPosition: Vector2(x, y)));
+      await game.world.add(
+        WitchesHatBody(
+          initPosition: Vector2(x - game.size.x / 2, y - game.size.y / 2),
+        ),
+      );
     }
   }
 }

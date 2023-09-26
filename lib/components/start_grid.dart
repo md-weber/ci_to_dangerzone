@@ -18,7 +18,7 @@ class StartGridBody extends BodyComponent with ContactCallbacks {
 
   @override
   Body createBody() {
-    final shape = PolygonShape()..setAsBoxXY(64, 64);
+    final shape = PolygonShape()..setAsBoxXY(48, 48);
     renderBody = false;
     final fixtureDef = FixtureDef(shape, isSensor: true);
 

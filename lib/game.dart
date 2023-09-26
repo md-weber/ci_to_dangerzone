@@ -6,7 +6,6 @@ import 'package:ci_dangerzone_app/components/race_track.dart';
 import 'package:ci_dangerzone_app/components/start_grid.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
-import 'package:flame/extensions.dart';
 import 'package:flame_forge2d/forge2d_game.dart';
 import 'components/player.dart';
 import 'race_track.dart';
