@@ -12,8 +12,8 @@ class PlayerBody extends BodyComponent with ContactCallbacks, KeyboardHandler {
   final Game flameGame;
   final String name;
 
-  double speed = 120.0;
-  double maxSpeed = 120.0;
+  double speed = 240.0;
+  double maxSpeed = 500.0;
   double rotationSpeed = 5.5;
   double driftFactor = 10;
   double velocityVsUp = 0;
@@ -106,8 +106,6 @@ class PlayerBody extends BodyComponent with ContactCallbacks, KeyboardHandler {
             keysPressed.contains(LogicalKeyboardKey.arrowRight))
         ? 1
         : 0;
-
-    print(accelerationInput);
   }
 
   void applyEngineForce() {
@@ -129,7 +127,6 @@ class PlayerBody extends BodyComponent with ContactCallbacks, KeyboardHandler {
     }
 
     Vector2 engineForward = forward * accelerationInput * speed * body.mass;
-    print(engineForward);
 
     body.applyForce(engineForward, point: body.position);
   }

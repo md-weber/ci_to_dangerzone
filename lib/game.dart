@@ -1,14 +1,20 @@
 // ignore_for_file: avoid_print
 
 import 'dart:math' as math;
+import 'dart:math';
+import 'dart:ui';
 
 import 'package:ci_dangerzone_app/components/race_track.dart';
 import 'package:ci_dangerzone_app/components/start_grid.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
-import 'package:flame_forge2d/forge2d_game.dart';
+import 'package:flame/particles.dart';
+import 'package:flame_forge2d/flame_forge2d.dart' as forge2d;
+import 'package:flutter/material.dart';
 import 'components/player.dart';
 import 'race_track.dart';
+
+Random rnd = Random();
 
 const vehicles = [
   'BlueCar',
@@ -20,7 +26,7 @@ const vehicles = [
 
 enum Overlays { start, end, game }
 
-class CIDangerZone extends Forge2DGame
+class CIDangerZone extends forge2d.Forge2DGame
     with HasKeyboardHandlerComponents, HasCollisionDetection, DragCallbacks {
   CIDangerZone() : super(zoom: 1.0, gravity: Vector2.all(0)) {
     initializeGameStart();
@@ -80,6 +86,20 @@ class CIDangerZone extends Forge2DGame
       _lapDisplay,
       _startGrid!,
       playerOne!,
+      ParticleSystemComponent(
+        particle: Particle.generate(
+          count: 10,
+          generator: (i) {
+            return AcceleratedParticle(
+              acceleration: Vector2(0, -1),
+              lifespan: 10000,
+              child: CircleParticle(
+                paint: Paint()..color = Colors.red,
+              ),
+            );
+          },
+        ),
+      )
     ]);
   }
 
