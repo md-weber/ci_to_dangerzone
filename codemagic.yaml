@@ -1,5 +1,4 @@
 workflows:
-
   sign-upload-only-workflow:
     name: Sign and upload script Only Workflow
     max_build_duration: 10
