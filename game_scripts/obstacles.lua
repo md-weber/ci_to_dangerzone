@@ -12,5 +12,5 @@ function doWeather()
 end
 
 function doDayNight()
-  mkDayNight(0);
+  mkDayNight(1);
 end
