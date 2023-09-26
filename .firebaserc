@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "ci-to-dangerzone"
+    "default": "ci-cd-dangerzone-unity"
   }
 }
