@@ -2,15 +2,12 @@
 
 import 'dart:math' as math;
 import 'dart:math';
-import 'dart:ui';
 
 import 'package:ci_dangerzone_app/components/race_track.dart';
 import 'package:ci_dangerzone_app/components/start_grid.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
-import 'package:flame/particles.dart';
 import 'package:flame_forge2d/flame_forge2d.dart' as forge2d;
-import 'package:flutter/material.dart';
 import 'components/player.dart';
 import 'race_track.dart';
 
@@ -69,38 +66,21 @@ class CIDangerZone extends forge2d.Forge2DGame
     if (_lapDisplay.isMounted) {
       world.remove(_lapDisplay);
     }
+
     _lapCount = -1;
 
     playerOne = PlayerBody(
       flameGame: this,
       name: _vehicleName,
-    ); //starting position of player
+    );
+
     _raceTrack = RaceTrack();
     _lapDisplay = LapDisplay();
     _startGrid = StartGridBody(
       initPosition: Vector2(-250, 140),
     );
 
-    world.addAll([
-      _raceTrack,
-      _lapDisplay,
-      _startGrid!,
-      playerOne!,
-      ParticleSystemComponent(
-        particle: Particle.generate(
-          count: 10,
-          generator: (i) {
-            return AcceleratedParticle(
-              acceleration: Vector2(0, -1),
-              lifespan: 10000,
-              child: CircleParticle(
-                paint: Paint()..color = Colors.red,
-              ),
-            );
-          },
-        ),
-      )
-    ]);
+    world.addAll([_raceTrack, _lapDisplay, _startGrid!, playerOne!]);
   }
 
   void lap() {

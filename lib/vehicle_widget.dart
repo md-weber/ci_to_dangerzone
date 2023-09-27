@@ -7,7 +7,7 @@ import 'game.dart';
 import 'stacked_sprite_component.dart';
 
 class VehicleSelector extends StatefulWidget {
-  final Function(String) selectVehicle; 
+  final Function(String) selectVehicle;
 
   const VehicleSelector({super.key, required this.selectVehicle});
 
@@ -58,7 +58,6 @@ class _VehicleSelectorState extends State<VehicleSelector> {
   }
 }
 
-
 class AnimatedVehicleSelector extends StatelessWidget {
   AnimatedVehicleSelector({super.key, required this.vehicleType});
 
@@ -91,7 +90,7 @@ class PlayerPreview extends StackedSpriteComponent {
   @override
   void update(double dt) {
     super.update(dt);
-    angle += 0.0005;
+    angle += 0.0002;
   }
 }
 

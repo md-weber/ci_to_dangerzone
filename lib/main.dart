@@ -1,10 +1,11 @@
+import 'package:ci_dangerzone_app/overlays/game_over_overlay.dart';
+import 'package:ci_dangerzone_app/overlays/game_overlay.dart';
+import 'package:ci_dangerzone_app/overlays/game_start_overlay.dart';
+import 'package:ci_dangerzone_app/theme.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
 import 'game.dart';
-import 'game_over_overlay.dart';
-import 'game_overlay.dart';
-import 'game_start_overlay.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,10 +18,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'CI Dangerzone',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        fontFamily: 'FutilePro',
-      ),
+      theme: themeData,
       home: const MyHomePage(),
     );
   }
